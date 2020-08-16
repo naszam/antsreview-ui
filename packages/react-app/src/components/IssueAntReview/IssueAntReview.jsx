@@ -84,7 +84,7 @@ function IssueAntReview() {
       );
       console.log(result);
       setIssueLoader(false);
-      window.toastProvider.addMessage("Issued Ant-Review...", {
+      window.toastProvider.addMessage("Issued Bounty...", {
         secondaryMessage: "Check transaction on Etherscan",
         actionHref: `${etherscanBaseUrl}/tx/${result.transactionHash}`,
         actionText: "Check",
@@ -94,7 +94,7 @@ function IssueAntReview() {
       selectMenu("explorer");
     } catch (err) {
       setIssueLoader(false);
-      window.toastProvider.addMessage("Issuing Ant-Review Failed...", {
+      window.toastProvider.addMessage("Issuing Bounty Failed...", {
         secondaryMessage: err.message,
         actionHref: "#!",
         variant: "failure",
@@ -204,7 +204,11 @@ function IssueAntReview() {
         <Box mt={4}>
           <Flex justifyContent="center">
             {/* Use the validated state to update UI */}
-            <Button type="submit" disabled={!validated}>
+            <Button
+              type="submit"
+              disabled={!validated}
+              className="submit-button"
+            >
               {issueLoader ? <Loader color="white" /> : "Issue Ant Review"}
             </Button>
           </Flex>

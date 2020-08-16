@@ -13,10 +13,14 @@ import { useLocation } from "react-router-dom";
 import ModalComponent from "./components/Modal";
 
 function App() {
-  const { addWeb3Config, selectMenu, setNetworkId, setAccount } = useContext(
-    ActionContext
-  );
-  const { antReviewEventsArray } = useContext(StateContext);
+  const {
+    addWeb3Config,
+    selectMenu,
+    setNetworkId,
+    setAccount,
+    setAntReviewEventsArray,
+  } = useContext(ActionContext);
+  const { antReviewBountyArray } = useContext(StateContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -51,7 +55,6 @@ function App() {
 
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
-      console.log(networkId);
       // const antsReviewDeployedNetwork = abis.antsreview.networks[networkId];
       const antsReviewInstance = new web3.eth.Contract(
         abis.antsreview.abi,
@@ -63,11 +66,14 @@ function App() {
         addresses.antsfaucet
       );
 
+      const antsInstance = new web3.eth.Contract(abis.ants.abi, addresses.ants);
+
       antsReviewInstance.events
         .AntReviewIssued({ fromBlock: 0 })
         .on("data", async (event) => {
-          antReviewEventsArray.push(event.returnValues);
-          console.log(antReviewEventsArray);
+          antReviewBountyArray.push(event.returnValues);
+          console.log(antReviewBountyArray);
+          setAntReviewEventsArray(antReviewBountyArray);
         })
         .on("error", console.error);
 
@@ -79,6 +85,7 @@ function App() {
         accounts: accounts[0],
         antsReviewInstance,
         antsFaucetInstance,
+        antsInstance,
       });
     } catch (error) {
       // Catch any errors for any of the above operations.

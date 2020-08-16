@@ -34,6 +34,11 @@ export const AppProvider = (props) => {
             ...prevState,
             antsFaucetInstance: action.antsFaucetInstance,
           };
+        case "SET_ANTS_INSTANCE":
+          return {
+            ...prevState,
+            antsInstance: action.antsInstance,
+          };
         case "SET_SELECTED_MENU":
           return {
             ...prevState,
@@ -48,7 +53,17 @@ export const AppProvider = (props) => {
         case "SET_ANT_REVIEW_EVENTS_ARRAY":
           return {
             ...prevState,
-            antReviewEventsArray: action.antReviewEventsArray,
+            antReviewBountyArray: action.antReviewBountyArray,
+          };
+        case "SET_CONTRIBUTE_BOUNTY_ID":
+          return {
+            ...prevState,
+            contributeBountyId: action.contributeBountyId,
+          };
+        case "SET_FULFILL_BOUNTY_ID":
+          return {
+            ...prevState,
+            fulfillBountyId: action.fulfillBountyId,
           };
         default:
       }
@@ -59,10 +74,13 @@ export const AppProvider = (props) => {
       accounts: "",
       antsReviewInstance: null,
       antsFaucetInstance: null,
+      antsInstance: null,
       selectedMenu: "explorer",
       openModal: false,
       modalConfig: {},
-      antReviewEventsArray: [],
+      antReviewBountyArray: [],
+      contributeBountyId: -1,
+      fulfillBountyId: -1,
     }
   );
 
@@ -87,6 +105,10 @@ export const AppProvider = (props) => {
           type: "SET_ANTS_FAUCET_INSTANCE",
           antsFaucetInstance: pWalletConfig.antsFaucetInstance,
         });
+        dispatch({
+          type: "SET_ANTS_INSTANCE",
+          antsInstance: pWalletConfig.antsInstance,
+        });
       },
       selectMenu: (pMenu) => {
         history.push(`/${pMenu}`);
@@ -104,14 +126,20 @@ export const AppProvider = (props) => {
           accounts: pAccount,
         });
       },
-      setAntReviewEventsArray: (pAntReviewEventsArray) => {
+      setAntReviewEventsArray: (pAntReviewBountyArray) => {
         dispatch({
           type: "SET_ANT_REVIEW_EVENTS_ARRAY",
-          antReviewEventsArray: pAntReviewEventsArray,
+          antReviewBountyArray: pAntReviewBountyArray,
         });
       },
       toggleModal: (modal) => {
         dispatch({ type: "TOGGLE_MODAL", modal });
+      },
+      setContributeBountyId: (contributeBountyId) => {
+        dispatch({ type: "SET_CONTRIBUTE_BOUNTY_ID", contributeBountyId });
+      },
+      setFulfillBountyId: (fulfillBountyId) => {
+        dispatch({ type: "SET_FULFILL_BOUNTY_ID", fulfillBountyId });
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

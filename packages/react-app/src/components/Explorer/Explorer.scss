@@ -1,2 +1,35 @@
 .Explorer {
+  overflow-y: scroll;
+  height: calc(100vh - 66px);
+
+  .bounty-card {
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+
+    &:hover {
+      box-shadow: 0px 8px 8px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+  .ant-id-container {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primaryColor);
+    color: var(--whiteColor);
+    border-radius: 50%;
+  }
+  .issuer-style {
+    border: 1px solid var(--grey2Color);
+    border-radius: 16px;
+
+    .issuer-text-style {
+      color: var(--grey4Color);
+    }
+  }
+
+  .action-button {
+    min-width: 118px;
+  }
 }
