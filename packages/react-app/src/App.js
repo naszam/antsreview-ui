@@ -27,6 +27,7 @@ function App() {
     selectMenu(location.pathname.substr(1));
     initWeb3();
     checkEthereumChange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkEthereumChange = () => {
