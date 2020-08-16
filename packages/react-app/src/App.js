@@ -24,7 +24,12 @@ function App() {
   const location = useLocation();
 
   useEffect(() => {
-    selectMenu(location.pathname.substr(1));
+    if (location.pathname === "/") {
+      selectMenu("explorer");
+      console.log(location.pathname);
+    } else {
+      selectMenu(location.pathname.substr(1));
+    }
     initWeb3();
     checkEthereumChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -12,7 +12,7 @@ const contributeBounty = async (
     .approve(addresses.antsreview, web3.utils.toWei(amount, "ether"))
     .send({ from: account });
   return antsReviewInstance.methods
-    .contribute(bountyId, amount)
+    .contribute(bountyId, web3.utils.toWei(amount, "ether"))
     .send({ from: account });
 };
 
