@@ -1,72 +1,91 @@
-import React from "react";
-import logo from "./AntsReview.png";
-import { Contract } from "@ethersproject/contracts";
-import { getDefaultProvider } from "@ethersproject/providers";
-import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
+import React, { useEffect, useContext } from "react";
+// import { Contract } from "@ethersproject/contracts";
+// import { getDefaultProvider } from "@ethersproject/providers";
 import { addresses, abis } from "@project/contracts";
-import "./App.css";
-
-const GET_TRANSFERS = gql`
-  {
-    transfers(first: 10) {
-      id
-      from
-      to
-      value
-    }
-  }
-`;
-
-async function readOnChainData() {
-  // Should replace with the end-user wallet, e.g. Metamask
-  const defaultProvider = getDefaultProvider();
-  // Create an instance of an ethers.js Contract
-  // Read more about ethers.js on https://docs.ethers.io/v5/api/contract/contract/
-  const antsreview = new Contract(addresses.antsreview, abis.antsreview, defaultProvider);
-  const ants = new Contract(addresses.ants, abis.ants, defaultProvider);
-  const antsfaucet = new Contract(addresses.antsfaucet, abis.antsfaucet, defaultProvider);
-  // A pre-defined address that owns some ANTS tokens
-  const tokenBalance = await ants.balanceOf(addresses.antsfaucet);
-  console.log({ tokenBalance: tokenBalance.toString() });
-}
+import "./App.scss";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import getWeb3 from "./utils/getWeb3";
+import { ActionContext } from "./hooks";
+import Home from "./components/Home";
+import { Flex } from "rimble-ui";
+import { useLocation } from "react-router-dom";
 
 function App() {
-  const { loading, error, data } = useQuery(GET_TRANSFERS);
+  const { addWeb3Config, selectMenu, setNetworkId, setAccount } = useContext(
+    ActionContext
+  );
+  const location = useLocation();
 
-  React.useEffect(() => {
-    if (!loading && !error && data && data.transfers) {
-      console.log({ transfers: data.transfers });
+  useEffect(() => {
+    selectMenu(location.pathname.substr(1));
+    initWeb3();
+    checkEthereumChange();
+  }, []);
+
+  const checkEthereumChange = () => {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        console.log(accounts);
+        setAccount(accounts[0]);
+        // window.location.reload();
+      });
+
+      window.ethereum.on("networkChanged", async (changedChainId) => {
+        console.log(changedChainId);
+        setNetworkId(Number.parseInt(changedChainId));
+        // window.location.reload();
+      });
     }
-  }, [loading, error, data]);
+  };
 
+  const initWeb3 = async () => {
+    try {
+      // Get network provider and web3 instance.
+      const web3 = await getWeb3();
+
+      // Use web3 to get the user's accounts.
+      const accounts = await web3.eth.getAccounts();
+
+      // Get the contract instance.
+      const networkId = await web3.eth.net.getId();
+      console.log(networkId);
+      const antsReviewDeployedNetwork = abis.antsreview.networks[networkId];
+      const antsReviewInstance = new web3.eth.Contract(
+        abis.antsreview.abi,
+        antsReviewDeployedNetwork && antsReviewDeployedNetwork.address
+      );
+      const antsFaucetDeployedNetwork = abis.antsfaucet.networks[networkId];
+      console.log(antsFaucetDeployedNetwork, antsReviewDeployedNetwork);
+      const antsFaucetInstance = new web3.eth.Contract(
+        abis.antsfaucet.abi,
+        antsFaucetDeployedNetwork && antsFaucetDeployedNetwork.address
+      );
+
+      // Set web3, accounts, and contract to the state, and then proceed with an
+      // example of interacting with the contract's methods.
+      addWeb3Config({
+        networkId: networkId,
+        web3,
+        accounts: accounts[0],
+        antsReviewInstance,
+        antsFaucetInstance,
+      });
+    } catch (error) {
+      // Catch any errors for any of the above operations.
+      alert(
+        `Failed to load web3, accounts, or contract. Check console for details.`
+      );
+      console.error(error);
+    }
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="react-logo" />
-        <p>
-          Edit <code>packages/react-app/src/App.js</code> and save to reload.
-        </p>
-        {/* Remove the "display: none" style and open the JavaScript console in the browser to see what this function does */}
-        <button onClick={() => readOnChainData()} style={{ display: "none" }}>
-          Read On-Chain Balance
-        </button>
-        <a
-          className="App-link"
-          href="https://ethereum.org/developers/#getting-started"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ marginTop: "0px" }}
-        >
-          Learn Ethereum
-        </a>
-        <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
-          Learn React
-        </a>
-        <a className="App-link" href="https://thegraph.com/docs/quick-start" target="_blank" rel="noopener noreferrer">
-          Learn The Graph
-        </a>
-      </header>
+      <Header />
+      <Flex>
+        <Sidebar />
+        <Home />
+      </Flex>
     </div>
   );
 }

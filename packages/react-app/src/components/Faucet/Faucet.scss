@@ -1,0 +1,43 @@
+@mixin poCentering {
+  top: 50%;
+  right: 50%;
+  bottom: 50%;
+  left: 50%;
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.Faucet {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  .faucet-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 600px;
+    height: 400px;
+    @include poCentering();
+    .ant-review-icon {
+      width: 96px;
+      height: 96px;
+      margin-bottom: 1rem;
+    }
+    .ant-review-desc {
+      color: var(--grey3Color);
+    }
+
+    .faucet-wallet-address {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+      width: 85%;
+    }
+
+    .claim-button {
+      min-width: 108px;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+.Sidebar {
+  width: 13%;
+  background: var(--grey5Color);
+  color: var(--whiteColor);
+  height: calc(100vh - 66px);
+
+  .create-issue {
+    margin: 1em;
+    margin-top: 1.5rem;
+    height: 42px;
+    text-transform: none;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
+      border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    transition: all 0.5s;
+    width: 86%;
+    border-radius: 8px;
+    outline: none;
+
+    &:hover {
+      transform: scale(1.01);
+      box-shadow: 4px 6px 18px 0 #11498a63;
+    }
+    &:focus {
+      box-shadow: 4px 6px 18px 0 #11498a63;
+      outline: none;
+    }
+  }
+
+  .selected {
+    background-color: #6257d426 !important;
+    border-left: 4px solid !important;
+    color: var(--whiteColor) !important;
+    &:hover {
+      background-color: #6257d426 !important;
+      border-left: 4px solid !important;
+      color: var(--whiteColor) !important;
+    }
+  }
+  .sidebar-item {
+    padding: 0.8em 1em;
+    cursor: pointer;
+    display: flex;
+    transition: all 0.25s linear;
+    color: var(--grey2Color);
+    .sidebar-item-main {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      .sidebar-item-icon {
+        width: 24px;
+        display: flex;
+      }
+      .sidebar-item-title {
+        margin-left: 8px;
+        font-size: 20px;
+      }
+    }
+
+    &:hover {
+      // background-color: #6257d426;
+      // border-left: 4px solid;
+      color: var(--whiteColor) !important;
+    }
+  }
+}
