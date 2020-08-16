@@ -1,5 +1,6 @@
 import { addresses } from "@project/contracts";
 const contributeBounty = async (
+  web3,
   antsReviewInstance,
   antsInstance,
   account,
@@ -8,7 +9,7 @@ const contributeBounty = async (
 ) => {
   console.log(antsReviewInstance, account, bountyId, amount);
   await antsInstance.methods
-    .approve(addresses.antsreview, amount)
+    .approve(addresses.antsreview, web3.utils.toWei(amount, "ether"))
     .send({ from: account });
   return antsReviewInstance.methods
     .contribute(bountyId, amount)

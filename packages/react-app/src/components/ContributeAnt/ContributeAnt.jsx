@@ -8,6 +8,7 @@ import contributeBounty from "../../utils/contributeBounty";
 function ContributeAnt() {
   const { toggleModal, selectMenu } = useContext(ActionContext);
   const {
+    web3,
     accounts,
     antsReviewInstance,
     antsInstance,
@@ -29,6 +30,7 @@ function ContributeAnt() {
       setIssueLoader(true);
       try {
         const result = await contributeBounty(
+          web3,
           antsReviewInstance,
           antsInstance,
           accounts,
