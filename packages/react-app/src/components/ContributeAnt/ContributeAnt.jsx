@@ -84,6 +84,7 @@ function ContributeAnt() {
               type="number"
               required // set required attribute to use brower's HTML5 input validation
               width={1}
+              min={0}
               placeholder="e.g. 10 ANT"
               value={contributeAmount}
               onChange={handleContributeAmount}
