@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Explorer.scss";
-import { Redirect, Route } from "react-router-dom";
+import { StateContext } from "../../hooks";
 
 function Explorer() {
+  const { antReviewEventsArray } = useContext(StateContext);
   return (
     <div className="Explorer">
       <div></div>

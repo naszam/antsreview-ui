@@ -6,15 +6,17 @@ import "./App.scss";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import getWeb3 from "./utils/getWeb3";
-import { ActionContext } from "./hooks";
+import { ActionContext, StateContext } from "./hooks";
 import Home from "./components/Home";
-import { Flex } from "rimble-ui";
+import { Flex, ToastMessage } from "rimble-ui";
 import { useLocation } from "react-router-dom";
+import ModalComponent from "./components/Modal";
 
 function App() {
   const { addWeb3Config, selectMenu, setNetworkId, setAccount } = useContext(
     ActionContext
   );
+  const { antReviewEventsArray } = useContext(StateContext);
   const location = useLocation();
 
   useEffect(() => {
@@ -50,17 +52,24 @@ function App() {
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
       console.log(networkId);
-      const antsReviewDeployedNetwork = abis.antsreview.networks[networkId];
+      // const antsReviewDeployedNetwork = abis.antsreview.networks[networkId];
       const antsReviewInstance = new web3.eth.Contract(
         abis.antsreview.abi,
-        antsReviewDeployedNetwork && antsReviewDeployedNetwork.address
+        addresses.antsreview
       );
-      const antsFaucetDeployedNetwork = abis.antsfaucet.networks[networkId];
-      console.log(antsFaucetDeployedNetwork, antsReviewDeployedNetwork);
+      // const antsFaucetDeployedNetwork = abis.antsfaucet.networks[networkId];
       const antsFaucetInstance = new web3.eth.Contract(
         abis.antsfaucet.abi,
-        antsFaucetDeployedNetwork && antsFaucetDeployedNetwork.address
+        addresses.antsfaucet
       );
+
+      antsReviewInstance.events
+        .AntReviewIssued({ fromBlock: 0 })
+        .on("data", async (event) => {
+          antReviewEventsArray.push(event.returnValues);
+          console.log(antReviewEventsArray);
+        })
+        .on("error", console.error);
 
       // Set web3, accounts, and contract to the state, and then proceed with an
       // example of interacting with the contract's methods.
@@ -82,6 +91,8 @@ function App() {
   return (
     <div className="App">
       <Header />
+      <ToastMessage.Provider ref={(node) => (window.toastProvider = node)} />
+      <ModalComponent />
       <Flex>
         <Sidebar />
         <Home />

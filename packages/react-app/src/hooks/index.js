@@ -39,6 +39,17 @@ export const AppProvider = (props) => {
             ...prevState,
             selectedMenu: action.selectedMenu,
           };
+        case "TOGGLE_MODAL":
+          return {
+            ...prevState,
+            openModal: action.modal.openModal,
+            modalConfig: action.modal.modalConfig,
+          };
+        case "SET_ANT_REVIEW_EVENTS_ARRAY":
+          return {
+            ...prevState,
+            antReviewEventsArray: action.antReviewEventsArray,
+          };
         default:
       }
     },
@@ -49,6 +60,9 @@ export const AppProvider = (props) => {
       antsReviewInstance: null,
       antsFaucetInstance: null,
       selectedMenu: "explorer",
+      openModal: false,
+      modalConfig: {},
+      antReviewEventsArray: [],
     }
   );
 
@@ -89,6 +103,15 @@ export const AppProvider = (props) => {
           type: "SET_WALLET_ADDRESS",
           accounts: pAccount,
         });
+      },
+      setAntReviewEventsArray: (pAntReviewEventsArray) => {
+        dispatch({
+          type: "SET_ANT_REVIEW_EVENTS_ARRAY",
+          antReviewEventsArray: pAntReviewEventsArray,
+        });
+      },
+      toggleModal: (modal) => {
+        dispatch({ type: "TOGGLE_MODAL", modal });
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

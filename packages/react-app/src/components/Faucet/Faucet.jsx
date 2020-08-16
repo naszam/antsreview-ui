@@ -34,9 +34,9 @@ function Faucet() {
           alt="ant-review"
           className="ant-review-icon"
         />
-        <Heading as={"h2"}>Ant Review Faucet</Heading>
+        <Heading as={"h2"}>Ants-Review Faucet</Heading>
         <Text.p className="ant-review-desc">
-          Claim your 10 ANTS token to your wallet
+          Claim 10 ANTS token to your wallet and explore our app
         </Text.p>
         <Input
           type="text"

@@ -1,0 +1,27 @@
+.IssueAntReview {
+  .FileInput__StyledFileLabel-sc-1xoknz0-1 {
+    width: 100%;
+
+    .BaseButton__StyledButton-sc-1o9z2ni-0 {
+      width: 100%;
+    }
+  }
+
+  .remove-issue-button {
+    cursor: pointer;
+    color: var(--grey3Color);
+    transition: all 0.5s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  .remove-issue-button-disabled {
+    cursor: not-allowed;
+  }
+
+  .cGgRoY {
+    min-width: 196px;
+  }
+}

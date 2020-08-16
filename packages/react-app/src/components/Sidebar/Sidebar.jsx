@@ -17,7 +17,18 @@ function Sidebar() {
 
   return (
     <div className="Sidebar">
-      <Button icon="Add" iconpos="left" mr={3} className="create-issue">
+      <Button
+        icon="Add"
+        iconpos="left"
+        mr={3}
+        className="create-issue"
+        onClick={(e) =>
+          toggleModal({
+            openModal: true,
+            modalConfig: { type: "issue-ant-review" },
+          })
+        }
+      >
         Issue AntReview
       </Button>
       <div
