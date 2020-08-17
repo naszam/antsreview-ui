@@ -8,7 +8,7 @@ const uploadIpfs = async (file) => {
   });
 
   const fileDetails = {
-    path: `/antreviews/${file.name}`,
+    path: `/${file.name}`,
     content: file,
   };
 
