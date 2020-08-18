@@ -36,8 +36,8 @@ function Explorer() {
   return (
     <div className="Explorer">
       <Box p={4}>
-        {antReviewBountyArray.map((bounty) => (
-          <Card width={1} p={3} mb={3} className="bounty-card">
+        {antReviewBountyArray.map((bounty, i) => (
+          <Card width={1} p={3} mb={3} className="bounty-card" key={i}>
             <Flex>
               <Box p={1} mr={3} mt={2} className="ant-id-container">
                 <Heading.h4 m={0}>{bounty.antId}</Heading.h4>
